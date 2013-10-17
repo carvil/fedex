@@ -9,8 +9,8 @@ module Fedex
         puts api_response if @debug
         response = parse_response(api_response)
         if success?(response)
-          rate_details = [response[:rate_reply][:rate_reply_details][:rated_shipment_details]].flatten.first[:shipment_rate_detail]
-          Fedex::Rate.new(rate_details)
+          rate_details = [response[:rate_reply][:rate_reply_details][:rated_shipment_details]].flatten
+          rate_details.map{ |rd| Fedex::Rate.new(rd[:shipment_rate_detail]) }
         else
           error_message = if response[:rate_reply]
             [response[:rate_reply][:notifications]].flatten.first[:message]
