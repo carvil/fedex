@@ -96,7 +96,9 @@ module Fedex
       def add_requested_shipment(xml)
         xml.RequestedShipment{
           xml.DropoffType @shipping_options[:drop_off_type] ||= "REGULAR_PICKUP"
-          xml.ServiceType service_type
+          unless service_type.nil?
+            xml.ServiceType service_type
+          end
           xml.PackagingType @shipping_options[:packaging_type] ||= "YOUR_PACKAGING"
           add_shipper(xml)
           add_recipient(xml)
